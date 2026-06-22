@@ -12,9 +12,25 @@ const links = [
   { href: '/bracket', label: 'Bracket' },
 ];
 
+const supportUrl = 'https://buymeacoffee.com/your-username';
+
 export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  const navLinkClass = (isActive: boolean) =>
+    `px-3 py-1.5 text-sm rounded-md transition-colors ${
+      isActive
+        ? 'bg-secondary text-foreground font-medium'
+        : 'text-muted-foreground hover:text-foreground'
+    }`;
+
+  const mobileLinkClass = (isActive: boolean) =>
+    `px-3 py-3 text-sm rounded-md transition-colors ${
+      isActive
+        ? 'bg-secondary text-foreground font-medium'
+        : 'text-muted-foreground hover:text-foreground'
+    }`;
 
   return (
     <nav className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
@@ -32,26 +48,29 @@ export function Navbar() {
             {links.map(link => {
               const isActive = pathname.startsWith(link.href);
               return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    isActive
-                      ? 'bg-secondary text-foreground font-medium'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
+                <Link key={link.href} href={link.href} className={navLinkClass(isActive)}>
                   {link.label}
                 </Link>
               );
             })}
+            <a
+              href={supportUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 text-sm rounded-md transition-colors text-muted-foreground hover:text-foreground flex items-center gap-1.5"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-red-500">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+              Support
+            </a>
           </div>
 
           <ThemeToggle />
 
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="md:hidden p-3 text-muted-foreground hover:text-foreground transition-colors active:bg-secondary/40 rounded-md"
             aria-label="Menu"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -74,7 +93,7 @@ export function Navbar() {
 
       {open && (
         <div className="md:hidden border-t border-border/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-1">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-0.5">
             {links.map(link => {
               const isActive = pathname.startsWith(link.href);
               return (
@@ -82,16 +101,23 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
-                    isActive
-                      ? 'bg-secondary text-foreground font-medium'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
+                  className={mobileLinkClass(isActive)}
                 >
                   {link.label}
                 </Link>
               );
             })}
+            <a
+              href={supportUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-3 text-sm rounded-md transition-colors text-muted-foreground hover:text-foreground flex items-center gap-2"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-red-500">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+              Support
+            </a>
           </div>
         </div>
       )}
