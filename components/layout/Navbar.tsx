@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 const links = [
   { href: '/groups', label: 'Groups' },
@@ -18,13 +19,13 @@ export function Navbar() {
   return (
     <nav className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 justify-between items-center">
+        <div className="flex h-14 items-center">
           <Link
             href="/"
-            className="hover:opacity-70 transition-opacity"
+            className="mr-auto hover:opacity-70 transition-opacity"
             onClick={() => setOpen(false)}
           >
-            <img src="/logo.png" alt="kikr" className="h-40 w-auto -ml-2" />
+            <img src="/logo.png" alt="kikr" className="h-40 w-auto -ml-4 invert dark:invert-0" />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
@@ -46,9 +47,11 @@ export function Navbar() {
             })}
           </div>
 
+          <ThemeToggle />
+
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 -mr-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Menu"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
