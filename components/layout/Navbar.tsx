@@ -24,7 +24,7 @@ export function Navbar() {
             className="hover:opacity-70 transition-opacity"
             onClick={() => setOpen(false)}
           >
-            <img src="/logo.png" alt="kikr" className="h-40 w-auto" />
+            <img src="/logo.png" alt="kikr" className="h-40 w-auto -ml-2" />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
