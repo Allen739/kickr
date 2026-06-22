@@ -69,7 +69,7 @@ const API_BASE = 'https://worldcup26.ir/get';
 
 export async function fetchGames(): Promise<Game[]> {
   const res = await fetch(`${API_BASE}/games`, { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error('Failed to fetch games');
+  if (!res.ok) throw new Error(`worldcup26.ir returned ${res.status}`);
   const data = await res.json();
   return data.games.map((g: any) => ({
     ...g,
@@ -118,17 +118,33 @@ export async function fetchGroups(): Promise<GroupStanding[]> {
 }
 
 export async function fetchTeams(): Promise<Team[]> {
-  const res = await fetch(`${API_BASE}/teams`, { next: { revalidate: 3600 } });
-  if (!res.ok) throw new Error('Failed to fetch teams');
-  const data = await res.json();
-  return data.teams.map((t: any) => ({
+  const [teamsRes, groupsRes] = await Promise.all([
+    fetch(`${API_BASE}/teams`, { next: { revalidate: 3600 } }),
+    fetch(`${API_BASE}/groups`, { next: { revalidate: 120 } }),
+  ]);
+  if (!teamsRes.ok) throw new Error('Failed to fetch teams');
+  const teamsData = await teamsRes.json();
+  let groupsData: any = { groups: [] };
+  if (groupsRes.ok) {
+    groupsData = await groupsRes.json();
+  }
+
+  const teamGroupMap = new Map<string, string>();
+  for (const g of groupsData.groups || []) {
+    const groupLetter = g.name || '';
+    for (const t of g.teams || []) {
+      teamGroupMap.set(t.team_id, groupLetter);
+    }
+  }
+
+  return teamsData.teams.map((t: any) => ({
     _id: t._id,
     id: t.id,
     name_en: t.name_en,
     name_fa: t.name_fa,
     flag: t.flag,
     fifa_code: t.fifa_code,
-    group: t.groups,
+    group: teamGroupMap.get(t.id) || t.groups || '',
   }));
 }
 
@@ -138,3 +154,4 @@ export async function fetchStadiums(): Promise<Stadium[]> {
   const data = await res.json();
   return data.stadiums;
 }
+

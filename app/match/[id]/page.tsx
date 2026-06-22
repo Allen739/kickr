@@ -1,8 +1,8 @@
 import { fetchGames, fetchStadiums } from '@/lib/api';
 import { FlagImage } from '@/components/ui/FlagImage';
 import { LiveBadge } from '@/components/ui/LiveBadge';
-import { parseScorers } from '@/lib/utils';
-import { format, parse } from 'date-fns';
+import { parseScorers, parseEAT } from '@/lib/utils';
+import { format } from 'date-fns';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -25,10 +25,10 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
 
   let matchDate = new Date();
   try {
-    matchDate = parse(game.local_date, 'MM/dd/yyyy HH:mm', new Date());
+    matchDate = parseEAT(game.local_date);
   } catch {}
 
-  let stadiumName = game.stadium_id;
+  let stadiumName = 'TBD';
   try {
     const stadiums = await fetchStadiums();
     const stadium = stadiums.find(s => s.id === game.stadium_id);
@@ -41,7 +41,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
     <div className="flex flex-col gap-8 max-w-lg mx-auto pt-8">
       <div className="text-center flex flex-col items-center gap-2">
         <span className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
-          {game.group || game.type} &middot; Matchday {game.matchday}
+          {game.group ? `Group ${game.group} &middot; Matchday ${game.matchday}` : game.type.replace('r32', 'Round of 32').replace('r16', 'Round of 16').replace('qf', 'Quarter-finals').replace('sf', 'Semi-finals').replace('third', 'Third place').replace('final', 'Final')}
         </span>
         <span className="text-xs text-muted-foreground">
           {format(matchDate, 'EEEE, MMMM d, yyyy • HH:mm')}
