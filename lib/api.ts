@@ -71,7 +71,11 @@ export async function fetchGames(): Promise<Game[]> {
   const res = await fetch(`${API_BASE}/games`, { next: { revalidate: 60 } });
   if (!res.ok) throw new Error('Failed to fetch games');
   const data = await res.json();
-  return data.games;
+  return data.games.map((g: any) => ({
+    ...g,
+    finished: g.finished === 'TRUE' || g.finished?.toLowerCase() === 'finished' ? 'TRUE' : g.finished,
+    time_elapsed: g.time_elapsed?.toLowerCase() === 'finished' ? 'finished' : g.time_elapsed,
+  }));
 }
 
 export async function fetchGroups(): Promise<GroupStanding[]> {
