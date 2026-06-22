@@ -21,10 +21,10 @@ export function Navbar() {
         <div className="flex h-14 justify-between items-center">
           <Link
             href="/"
-            className="font-bold text-lg tracking-tight hover:opacity-70 transition-opacity"
+            className="hover:opacity-70 transition-opacity"
             onClick={() => setOpen(false)}
           >
-            kikr
+            <img src="/logo.png" alt="kikr" className="h-8 w-auto" />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
