@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model CachedData {
+  id        String   @id
+  value     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
