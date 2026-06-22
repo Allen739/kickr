@@ -12,7 +12,7 @@ const links = [
   { href: '/bracket', label: 'Bracket' },
 ];
 
-const supportUrl = 'https://buymeacoffee.com/your-username';
+const supportUrl = 'https://buymeacoffee.com/allenwest';
 
 export function Navbar() {
   const pathname = usePathname();
