@@ -1,8 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { isSameDay, format } from 'date-fns';
-import { parseEAT } from '@/lib/utils';
+import { isSameDay, parse, format } from 'date-fns';
 import { MatchList } from './MatchList';
 import type { Game } from '@/lib/api';
 
@@ -11,7 +10,7 @@ export function TodaySection({ games }: { games: Game[] }) {
 
   const todaysMatches = games.filter(g => {
     try {
-      const matchDate = parseEAT(g.local_date);
+      const matchDate = parse(g.local_date, 'MM/dd/yyyy HH:mm', new Date());
       return isSameDay(matchDate, today);
     } catch { return false; }
   });

@@ -1,7 +1,7 @@
 import { fetchGames } from '@/lib/api';
 import { MatchList } from '@/components/match/MatchList';
 import { TodaySection } from '@/components/match/TodaySection';
-import { parseEAT } from '@/lib/utils';
+import { parse } from 'date-fns';
 
 export default async function Home() {
   const games = await fetchGames();
@@ -9,8 +9,8 @@ export default async function Home() {
   const recentResults = games
     .filter(g => g.finished === 'TRUE')
     .sort((a, b) => {
-      const dateA = parseEAT(a.local_date);
-      const dateB = parseEAT(b.local_date);
+      const dateA = parse(a.local_date, 'MM/dd/yyyy HH:mm', new Date());
+      const dateB = parse(b.local_date, 'MM/dd/yyyy HH:mm', new Date());
       return dateB.getTime() - dateA.getTime();
     })
     .slice(0, 6);
@@ -18,8 +18,8 @@ export default async function Home() {
   const upcomingMatches = games
     .filter(g => g.finished === 'FALSE' && g.time_elapsed === 'notstarted')
     .sort((a, b) => {
-      const dateA = parseEAT(a.local_date);
-      const dateB = parseEAT(b.local_date);
+      const dateA = parse(a.local_date, 'MM/dd/yyyy HH:mm', new Date());
+      const dateB = parse(b.local_date, 'MM/dd/yyyy HH:mm', new Date());
       return dateA.getTime() - dateB.getTime();
     })
     .slice(0, 6);

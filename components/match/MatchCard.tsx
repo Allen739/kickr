@@ -1,7 +1,6 @@
 import Link from 'next/link';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { Game } from '@/lib/api';
-import { parseEAT } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { FlagImage } from '@/components/ui/FlagImage';
 import { LiveBadge } from '@/components/ui/LiveBadge';
@@ -14,7 +13,7 @@ interface MatchCardProps {
 export function MatchCard({ game, compact = false }: MatchCardProps) {
   let matchDate = new Date();
   try {
-    matchDate = parseEAT(game.local_date);
+    matchDate = parse(game.local_date, 'MM/dd/yyyy HH:mm', new Date());
   } catch (e) {}
 
   const isLive = game.finished === "FALSE" && game.time_elapsed !== "notstarted";

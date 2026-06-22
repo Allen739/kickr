@@ -1,13 +1,8 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { parse, addHours } from "date-fns"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
-}
-
-export function parseEAT(dateStr: string): Date {
-  return addHours(parse(dateStr, 'MM/dd/yyyy HH:mm', new Date()), 3);
 }
 
 export function parseScorers(scorersStr: string | null | undefined): string[] {

@@ -1,8 +1,8 @@
 import { fetchGames, fetchStadiums } from '@/lib/api';
 import { FlagImage } from '@/components/ui/FlagImage';
 import { LiveBadge } from '@/components/ui/LiveBadge';
-import { parseScorers, parseEAT } from '@/lib/utils';
-import { format } from 'date-fns';
+import { parseScorers } from '@/lib/utils';
+import { format, parse } from 'date-fns';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -25,7 +25,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
 
   let matchDate = new Date();
   try {
-    matchDate = parseEAT(game.local_date);
+    matchDate = parse(game.local_date, 'MM/dd/yyyy HH:mm', new Date());
   } catch {}
 
   let stadiumName = 'TBD';
