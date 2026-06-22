@@ -1,4 +1,4 @@
-import { fetchGames } from '@/lib/api';
+import { fetchGames, fetchStadiums } from '@/lib/api';
 import { getCachedData } from '@/lib/cache';
 import { FlagImage } from '@/components/ui/FlagImage';
 import { LiveBadge } from '@/components/ui/LiveBadge';
@@ -27,6 +27,15 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
   let matchDate = new Date();
   try {
     matchDate = parse(game.local_date, 'MM/dd/yyyy HH:mm', new Date());
+  } catch (e) {}
+
+  let stadiumName = game.stadium_id;
+  try {
+    const stadiums = await getCachedData('all_stadiums', fetchStadiums, 86400);
+    const stadium = stadiums.find(s => s.id === game.stadium_id);
+    if (stadium) {
+      stadiumName = `${stadium.name_en}, ${stadium.city_en}`;
+    }
   } catch (e) {}
 
   return (
@@ -86,14 +95,14 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
       </div>
 
       <div className="border border-border rounded-lg p-4">
-        <div className="grid grid-cols-2 gap-3 text-xs">
+        <div className="flex flex-col gap-2 text-xs">
           <div className="flex justify-between">
             <span className="text-muted-foreground">Stadium</span>
-            <span>{game.stadium_id}</span>
+            <span className="text-right">{stadiumName}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Type</span>
-            <span className="capitalize">{game.type}</span>
+            <span className="capitalize">{game.type === 'group' ? 'Group Stage' : game.type}</span>
           </div>
         </div>
       </div>
