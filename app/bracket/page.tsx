@@ -1,9 +1,8 @@
 import { fetchGames } from '@/lib/api';
-import { getCachedData } from '@/lib/cache';
 import { BracketView } from '@/components/bracket/BracketView';
 
 export default async function BracketPage() {
-  const games = await getCachedData('all_games', fetchGames, 60);
+  const games = await fetchGames();
   const knockout = games.filter(g => g.type !== 'group');
 
   return (

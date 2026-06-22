@@ -1,9 +1,8 @@
 import { fetchGroups, GroupStanding } from '@/lib/api';
-import { getCachedData } from '@/lib/cache';
 import { GroupTable } from '@/components/group/GroupTable';
 
 export default async function GroupsPage() {
-  const groups = await getCachedData('all_groups', fetchGroups, 60);
+  const groups = await fetchGroups();
 
   const sortedGroups = [...groups]
     .filter((g): g is GroupStanding => typeof g.group === 'string')

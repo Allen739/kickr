@@ -1,5 +1,4 @@
 import { fetchGames, fetchTeams, fetchGroups } from '@/lib/api';
-import { getCachedData } from '@/lib/cache';
 import { MatchList } from '@/components/match/MatchList';
 import { FlagImage } from '@/components/ui/FlagImage';
 import { GroupTable } from '@/components/group/GroupTable';
@@ -8,17 +7,17 @@ export const dynamic = 'force-dynamic';
 
 export default async function TeamDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const teams = await getCachedData('all_teams', fetchTeams, 3600);
+  const teams = await fetchTeams();
   const team = teams.find(t => t.id === id);
 
   if (!team) {
     return <div className="p-8 text-center text-sm text-muted-foreground">Team not found.</div>;
   }
 
-  const games = await getCachedData('all_games', fetchGames, 60);
+  const games = await fetchGames();
   const teamGames = games.filter(g => g.home_team_id === id || g.away_team_id === id);
 
-  const groups = await getCachedData('all_groups', fetchGroups, 60);
+  const groups = await fetchGroups();
   const teamGroup = groups.find(g => g.group === team.group);
 
   return (

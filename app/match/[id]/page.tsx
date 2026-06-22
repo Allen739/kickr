@@ -1,5 +1,4 @@
 import { fetchGames, fetchStadiums } from '@/lib/api';
-import { getCachedData } from '@/lib/cache';
 import { FlagImage } from '@/components/ui/FlagImage';
 import { LiveBadge } from '@/components/ui/LiveBadge';
 import { parseScorers } from '@/lib/utils';
@@ -10,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function MatchPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const games = await getCachedData('all_games', fetchGames, 60);
+  const games = await fetchGames();
   const game = games.find(g => g.id === id);
 
   if (!game) {
@@ -27,16 +26,16 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
   let matchDate = new Date();
   try {
     matchDate = parse(game.local_date, 'MM/dd/yyyy HH:mm', new Date());
-  } catch (e) {}
+  } catch {}
 
   let stadiumName = game.stadium_id;
   try {
-    const stadiums = await getCachedData('all_stadiums', fetchStadiums, 86400);
+    const stadiums = await fetchStadiums();
     const stadium = stadiums.find(s => s.id === game.stadium_id);
     if (stadium) {
       stadiumName = `${stadium.name_en}, ${stadium.city_en}`;
     }
-  } catch (e) {}
+  } catch {}
 
   return (
     <div className="flex flex-col gap-8 max-w-lg mx-auto pt-8">

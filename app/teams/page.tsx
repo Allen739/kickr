@@ -1,9 +1,8 @@
 import { fetchTeams } from '@/lib/api';
-import { getCachedData } from '@/lib/cache';
 import { TeamCard } from '@/components/team/TeamCard';
 
 export default async function TeamsPage() {
-  const teams = await getCachedData('all_teams', fetchTeams, 3600);
+  const teams = await fetchTeams();
 
   const teamsByGroup = teams.reduce((acc, team) => {
     const g = team.group || '?';

@@ -1,10 +1,9 @@
 import { fetchGames } from '@/lib/api';
-import { getCachedData } from '@/lib/cache';
 import { MatchList } from '@/components/match/MatchList';
-import { isSameDay, parse, parseISO } from 'date-fns';
+import { isSameDay, parse } from 'date-fns';
 
 export default async function Home() {
-  const games = await getCachedData('all_games', fetchGames, 60);
+  const games = await fetchGames();
 
   const today = new Date('2026-06-22T00:00:00');
 
