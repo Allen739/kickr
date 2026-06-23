@@ -21,6 +21,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "kikr | World Cup 2026 Tracker",
   description: "Real-time FIFA World Cup 2026 Tracker with live scores, standings, and bracket.",
+  manifest: "/manifest.json",
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-title": "kikr",
+    "theme-color": "#0a0a0a",
+  },
 };
 
 export default function RootLayout({

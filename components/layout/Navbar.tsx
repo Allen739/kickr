@@ -10,6 +10,7 @@ const links = [
   { href: '/fixtures', label: 'Fixtures' },
   { href: '/teams', label: 'Teams' },
   { href: '/bracket', label: 'Bracket' },
+  { href: '/top-scorers', label: 'Scorers' },
 ];
 
 export function Navbar() {
