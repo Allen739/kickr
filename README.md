@@ -1,39 +1,41 @@
 # kikr — FIFA World Cup 2026 Tracker
 
-Live scores, group standings, and knockout bracket for the 2026 FIFA World Cup. Built with Next.js, TypeScript, Tailwind CSS, and Prisma.
+Live scores, group standings, and knockout bracket for the 2026 FIFA World Cup.
 
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS v4 + shadcn/ui
-- **Database:** SQLite via Prisma 7 (caching layer)
-- **API:** [worldcup26.ir](https://worldcup26.ir) (free, no auth)
+- **Styling:** Tailwind CSS v4 + shadcn/ui (base-nova)
+- **API:** [worldcup26.ir](https://worldcup26.ir) (free, no auth, no key)
 
 ## Getting Started
 
 ```bash
 npm install
-npx prisma migrate dev
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## How It Works
+## Routes
 
-All data is fetched from the WorldCup26 API and cached in a local SQLite database. Pages serve cached data first and refresh in the background (stale-while-revalidate). This makes the app resilient to API downtime.
-
-- **Match data** refreshes every 60 seconds
-- **Team data** refreshes every hour
-- **Stadium data** refreshes every 24 hours
+| Route | Description |
+|---|---|
+| `/` | Home — today's matches, live now, recent results, upcoming fixtures |
+| `/groups` | Group stage standings with points, GD, form |
+| `/fixtures` | All 104 matches filtered by group and matchday |
+| `/match/[id]` | Match detail with score, scorers, stadium, type |
+| `/teams` | All 48 teams grouped by group |
+| `/teams/[id]` | Team detail with flag, group, FIFA code |
+| `/bracket` | Knockout bracket tree with SVG connectors |
+| `/top-scorers` | Golden Boot race with player flags and goals |
 
 ## Project Structure
 
 ```
-app/              # Pages (home, groups, fixtures, teams, match, bracket)
-components/       # UI components (Navbar, MatchCard, GroupTable, BracketView, etc.)
-lib/              # API client, cache layer, flag mapping, utilities
-prisma/           # Schema and migrations
-public/           # Static assets
+app/              # Pages (home, groups, fixtures, teams, match, bracket, top-scorers)
+components/       # UI components (Navbar, MatchCard, GroupTable, BracketView, TodaySection, etc.)
+lib/              # API client, flag mapping, utilities
+public/           # Static assets, PWA icons, manifest
 ```
